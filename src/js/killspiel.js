@@ -36,7 +36,7 @@ const init = async () => {
     const guess = (channel, user, args) => {
         if (args.length == 1) {
             if (running) {
-                currentGuesses[user] = parseInt(args[0], 10);
+                currentGuesses[user] = parseInt(args[0].trim(), 10);
                 console.log(`User ${user} guessed ${currentGuesses[user]}`);
             } else {
                 client.say(channel, 'Killspiel ist nicht aktiv!');
@@ -49,7 +49,7 @@ const init = async () => {
     const resolve = (channel, _, args) => {
         if (args.length == 1 && !running) {
             if (!running) {
-                const realKills = parseInt(args[0], 10);
+                const realKills = parseInt(args[0].trim(), 10);
                 const winners = [];
                 Object.entries(currentGuesses).forEach(entry => {
                     const [key, value] = entry;
