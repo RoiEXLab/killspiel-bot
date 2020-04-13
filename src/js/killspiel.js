@@ -128,6 +128,16 @@ const main = () => {
             console.error(e);
         }
     });
+
+    document.querySelector('#disconnect').addEventListener('click', async () => {
+        try {
+            if (client) {
+                await client.disconnect();
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    });
 };
 
 
