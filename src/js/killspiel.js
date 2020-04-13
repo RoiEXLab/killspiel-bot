@@ -110,14 +110,20 @@ const init = async () => {
     });
 
     await client.connect();
+    return client;
 };
 
 
 const main = () => {
 
+    let client = null;
+
     document.querySelector('#connect').addEventListener('click', async () => {
         try {
-            await init();
+            if (client) {
+                await client.disconnect();
+            }
+            client = await init();
         } catch (e) {
             console.error(e);
         }
