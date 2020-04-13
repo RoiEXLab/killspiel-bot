@@ -21,7 +21,9 @@ const init = async () => {
     let running = false;
 
     const start = (channel) => {
-        currentGuesses = {};
+        if (!running) {
+            currentGuesses = {};
+        }
         running = true;
         console.log('Awaiting guesses...');
         client.say(channel, 'Tipps werden jetzt angenommen!');
