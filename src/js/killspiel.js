@@ -36,7 +36,7 @@ const init = async () => {
     };
 
     const guess = (channel, user, args) => {
-        if (args.length == 1) {
+        if (args.length === 1) {
             if (running) {
                 currentGuesses[user] = parseInt(args[0].trim(), 10);
                 console.log(`User ${user} guessed ${currentGuesses[user]}`);
@@ -49,7 +49,7 @@ const init = async () => {
     };
 
     const resolve = (channel, _, args) => {
-        if (args.length == 1 && !running) {
+        if (args.length === 1 && !running) {
             if (!running) {
                 const realKills = parseInt(args[0].trim(), 10);
                 const winners = [];
@@ -78,34 +78,30 @@ const init = async () => {
 
 
 
-    const handleCommand = async (channel, user, command) => {
+    const handleCommand = (channel, user, command) => {
         const args = command.split(' ');
         if (args.length > 0) {
             const action = subCommands[args[0]];
             if (!action) {
-                client.say(channel, 'Ungültiger Befehl!');
+                client.say(channel, 'Ungültiger Befehl! @' + user.username);
             } else if (action.condition(user)) {
                 action.action(channel, user.username, args.slice(1));
             } else {
                 client.say(channel, 'Keine Berechtigung!');
             }
         } else {
-            client.say(channel, 'Ungültiger Befehl!');
+            client.say(channel, 'Ungültiger Befehl! @' + user.username);
         }
     };
 
 
-    client.on('message', async (channel, user, message) => {
-        try {
-            if (user.username === channel.slice(1)) {
-                user.mod = true;
-            }
-            if (message.startsWith(command)) {
-                await handleCommand(channel, user, message.slice(command.length));
-            }
-        } catch (e) {
-            console.error(e);
-            alert(e);
+    client.on('message', (channel, user, message) => {
+        if (user.username === channel.slice(1)) {
+            user.mod = true;
+        }
+        message = message.toLowerCase();
+        if (message.startsWith(command)) {
+            handleCommand(channel, user, message.slice(command.length));
         }
     });
 
